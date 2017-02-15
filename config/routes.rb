@@ -1,14 +1,31 @@
 Rails.application.routes.draw do
 
-	get '/login', to: 'sessions#new'
 
-  post '/login', to: 'sessions#create'  
+ resources :comments do
+   post 'votes/up'
 
-  delete '/logout', to: 'sessions#destroy'
-  
-  resources :users
-  resources :comments
-  resources :posts
-  
-  
+     post 'votes/down'
+ end
+
+ get '/login', to:'sessions#new'
+
+ post '/login', to:'sessions#create'
+
+ delete '/logout', to: 'sessions#destroy'
+
+
+
+ get 'sessions/new'
+
+ get 'sessions/create'
+
+ get 'sessions/destroy'
+
+ resources :posts do
+     post 'votes/up'
+
+     post 'votes/down'
+ end
+ resources :users
+
 end

@@ -1,27 +1,50 @@
-
-<table class="table">
-	<h1> <%= @post.title %> </h1>
-	<h4>By: <%= @post.user.username %></h4>
-
-	<p> <%= @post.thread %> </p>
-
-	<h2>Comments</h2>
-
-	<% @post.comments.each do |comment| %>
-		<p><%= comment.response %></p>
-		<h4>By: <%= comment.user.username %></h4>
-		
-	<% end %>
+<div class="panel panel-default">
+	<div class="panel-body">
+	<div class="title">
+		<h3> <%= @post.title %> </h3>
+	</div>	
+			<h4><%= @post.user.username %></h4>
+				
+				<div class="thread">
+				<%= @post.thread %>
+				</div>
+						<div class="comments">
+						<h5>-- Comments --</h5>
+						 	<% @post.comments.each do |comment| %> 
+							<p><%= comment.response %></p>
+							<h6>- <%= comment.user.username %></h6>				
+			        <% if @current_user == @post.title %>
+			        <td><%= link_to 'Show', post %></td>
+			        <td><%= link_to 'Edit', edit_post_path(post) %></td>
+			        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+		        	<% end %>
+						<% end %>
+						</div>
+	<br>
+	<br>
 
 	<%= form_for(@post.comments.new) do |f| %>
 		<%= f.hidden_field :post_id, value: @post.id %>
 		<%= f.label :response, "Add a comment" %>
 		<br>
-		<%= f.text_area :response, size: "80x5" %>
+		<%= f.text_area :response, size:"50x5" %>
 		<br>
-		<%= f.submit "Submit Form" %>
+		<%= f.submit class: 'btn btn-warning' %>
 	<% end %>
-</table>
+
 
 <%= link_to 'Edit', edit_post_path(@post) %> |
 <%= link_to 'Back', posts_path %>
+
+	<p> Votes For: <%= @post.votes_for %> </p>
+  <p> Votes Against: <%= @post.votes_against %> </p>
+  	<%= link_to post_votes_up_path(@post), method: :post do %>
+    	<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+      Vote For!
+    <% end %>
+    <%= link_to post_votes_down_path(@post), method: :post do %>
+      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      Vote Against!
+    <% end %>
+	</div>
+</div>	
